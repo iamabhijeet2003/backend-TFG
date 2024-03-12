@@ -6,6 +6,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Get;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -21,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
         new Put(processor: UserPasswordHasher::class),
+        new Get(),
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
