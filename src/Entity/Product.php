@@ -36,6 +36,9 @@ class Product
     #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'productId', orphanRemoval: true)]
     private Collection $orderDetails;
 
+    #[ORM\Column]
+    private ?int $quantityAvailable = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -132,6 +135,18 @@ class Product
                 $orderDetail->setProductId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getQuantityAvailable(): ?int
+    {
+        return $this->quantityAvailable;
+    }
+
+    public function setQuantityAvailable(int $quantityAvailable): static
+    {
+        $this->quantityAvailable = $quantityAvailable;
 
         return $this;
     }
