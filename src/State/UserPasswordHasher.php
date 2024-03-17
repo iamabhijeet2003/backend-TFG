@@ -27,8 +27,8 @@ final class UserPasswordHasher implements ProcessorInterface
 
         //Set admin rol for the next registered user
         //Comment these lines to return to normal users
-        $roles[] = 'ROLE_ADMIN';
-        $data->setRoles($roles);
+        //$roles[] = 'ROLE_ADMIN';
+        //$data->setRoles($roles);
 
         return $this->processor->process($data, $operation, $uriVariables, $context);
     }
