@@ -31,6 +31,9 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'orderId', orphanRemoval: true)]
     private Collection $orderDetails;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $prepared = null;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
@@ -103,6 +106,18 @@ class Order
                 $orderDetail->setOrderId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isPrepared(): ?bool
+    {
+        return $this->prepared;
+    }
+
+    public function setPrepared(?bool $prepared): static
+    {
+        $this->prepared = $prepared;
 
         return $this;
     }
