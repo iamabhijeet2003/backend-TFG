@@ -18,11 +18,15 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\GetCollection;
 #[ApiResource(
     operations: [
         new Post(processor: UserPasswordHasher::class, validationContext: ['groups' => ['Default', 'user:create']]),
         new Put(processor: UserPasswordHasher::class),
         new Get(),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')"
+        )
     ],
     normalizationContext: ['groups' => ['user:read']],
     denormalizationContext: ['groups' => ['user:create', 'user:update']],
@@ -65,10 +69,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     //#[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $first_name = null;
 
     //#[ORM\Column(length: 255)]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $last = null;
 
