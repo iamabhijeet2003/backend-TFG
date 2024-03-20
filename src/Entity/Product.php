@@ -28,8 +28,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
     ],
     security: "is_granted('ROLE_USER')",
 )]
-#[ApiFilter(OrderFilter::class, properties: ['price'])]
-#[ApiFilter(OrderFilter::class, properties: ['name'])]
+#[ApiFilter(OrderFilter::class, properties: ['price', 'name'])]
 class Product
 {
     #[ORM\Id]
