@@ -15,20 +15,29 @@ use Doctrine\ORM\Mapping as ORM;
 // los filters
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
-
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ApiResource(
     operations: [
-        new Get(),
+        new Get(paginationEnabled: true),
         new GetCollection(),
         new Post(security: "is_granted('ROLE_ADMIN')"),
         new Put(security: "is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
     ],
+    //paginationItemsPerPage: 10,
     security: "is_granted('ROLE_USER')",
 )]
 #[ApiFilter(OrderFilter::class, properties: ['price', 'name'])]
+#[ApiFilter(SearchFilter::class, properties: [
+    'category' => 'exact'
+])]
+/*
+#[ApiFilter(SearchFilter::class, properties: [
+    'price' => 'exact',
+    'name' => 'partial', // Add the new filter for the 'name' property
+])]*/
 class Product
 {
     #[ORM\Id]
