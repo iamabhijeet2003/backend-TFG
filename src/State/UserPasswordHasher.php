@@ -25,6 +25,9 @@ final class UserPasswordHasher implements ProcessorInterface
         $data->setPassword($hashedPassword);
         $data->eraseCredentials();
 
+        $roles[] = 'ROLE_USER';
+        $data->setRoles($roles);
+
         //Set admin rol for the next registered user
         //Comment these lines to return to normal users
         //$roles[] = 'ROLE_ADMIN';
