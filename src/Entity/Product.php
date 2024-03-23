@@ -26,12 +26,13 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
         new Put(security: "is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
     ],
-    //paginationItemsPerPage: 10,
+    paginationItemsPerPage: 10,
     security: "is_granted('ROLE_USER')",
 )]
 #[ApiFilter(OrderFilter::class, properties: ['price', 'name'])]
 #[ApiFilter(SearchFilter::class, properties: [
-    'category' => 'exact'
+    'category' => 'exact',
+    'name' => 'partial',
 ])]
 /*
 #[ApiFilter(SearchFilter::class, properties: [
@@ -67,9 +68,13 @@ class Product
     #[ORM\Column]
     private ?int $quantityAvailable = null;
 
+    #[ORM\OneToMany(targetEntity: Ratings::class, mappedBy: 'productId', orphanRemoval: true)]
+    private Collection $ratings;
+
     public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +180,36 @@ class Product
     public function setQuantityAvailable(int $quantityAvailable): static
     {
         $this->quantityAvailable = $quantityAvailable;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ratings>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setProductId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getProductId() === $this) {
+                $rating->setProductId(null);
+            }
+        }
 
         return $this;
     }
