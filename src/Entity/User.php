@@ -83,9 +83,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
    
     private Collection $orders;
 
+    #[ORM\OneToMany(targetEntity: Ratings::class, mappedBy: 'userId')]
+    private Collection $ratings;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,6 +224,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($order->getUserId() === $this) {
                 $order->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ratings>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Ratings $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Ratings $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getUserId() === $this) {
+                $rating->setUserId(null);
             }
         }
 
