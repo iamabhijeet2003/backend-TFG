@@ -62,9 +62,11 @@ class OrderMailSubscriber implements EventSubscriberInterface
 
     private function generateOrderConfirmationHtml(Order $order): string
 {
+    $user = $order->getUserId();
     // Generate the text for the order confirmation email
     // Generate the HTML content for the order confirmation email
-    $html = '<h1 style="color: #333; font-family: Arial, sans-serif;">Thanks for your order!</h1>';
+    $html = '<h1 style="color: #333; font-family: Arial, sans-serif;"> Hello '. $user->getFirstName() .'</h1>';
+    $html .= '<h1 style="color: #333; font-family: Arial, sans-serif;">Thanks for your order!</h1>';
     $html .= '<p style="font-size: 16px;">';
     $html .= 'Your order <strong>#' . $order->getId() . '</strong> has been confirmed.';
     $html .= '</p>';
