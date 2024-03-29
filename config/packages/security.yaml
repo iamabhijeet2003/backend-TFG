@@ -25,6 +25,7 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                
             # lazy: true
             # provider: app_user_provider
 
@@ -38,6 +39,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/reset-password.*$, roles: PUBLIC_ACCESS }
+        - { path: ^/stripe.*$, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/auth, roles: PUBLIC_ACCESS }
         - { path: ^/api/users$, roles: PUBLIC_ACCESS }
