@@ -39,6 +39,10 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/reset-password.*$, roles: PUBLIC_ACCESS }
+        - { path: ^/user/\d+/orders, roles: PUBLIC_ACCESS }
+        - { path: ^/profile, roles: PUBLIC_ACCESS }
+        #- { path: ^/api/categories*$, roles: PUBLIC_ACCESS }
+        #- { path: ^/api/ratingss*$, roles: PUBLIC_ACCESS }
         - { path: ^/stripe.*$, roles: PUBLIC_ACCESS }
         - { path: ^/api$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
         - { path: ^/auth, roles: PUBLIC_ACCESS }
