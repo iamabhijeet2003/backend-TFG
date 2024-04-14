@@ -22,7 +22,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
     operations: [
         new Get(paginationEnabled: true),
         new GetCollection(),
-        new Post(security: "is_granted('ROLE_ADMIN')"),
+        new Post(security: "is_granted('ROLE_ADMIN')",securityMessage: 'Only admins can add Products.'),
         new Put(security: "is_granted('ROLE_ADMIN')"),
         new Delete(security: "is_granted('ROLE_ADMIN')"),
     ],
@@ -33,11 +33,12 @@ use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 #[ApiFilter(SearchFilter::class, properties: [
     'category' => 'exact',
     'name' => 'partial',
+    'brand' => 'exact'
 ])]
 /*
 #[ApiFilter(SearchFilter::class, properties: [
     'price' => 'exact',
-    'name' => 'partial', // Add the new filter for the 'name' property
+    'name' => 'partial', 
 ])]*/
 class Product
 {
@@ -70,6 +71,9 @@ class Product
 
     #[ORM\OneToMany(targetEntity: Ratings::class, mappedBy: 'productId', orphanRemoval: true)]
     private Collection $ratings;
+
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    private ?Brand $brand = null;
 
     public function __construct()
     {
@@ -210,6 +214,18 @@ class Product
                 $rating->setProductId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getBrand(): ?Brand
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?Brand $brand): static
+    {
+        $this->brand = $brand;
 
         return $this;
     }
