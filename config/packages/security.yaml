@@ -41,6 +41,7 @@ security:
         - { path: ^/reset-password.*$, roles: PUBLIC_ACCESS }
         - { path: ^/user/\d+/orders, roles: PUBLIC_ACCESS }
         - { path: ^/profile, roles: PUBLIC_ACCESS }
+        - { path: ^/stripe/create-checkout-session, roles: PUBLIC_ACCESS }
         - { path: '^/api/newsletters', roles: PUBLIC_ACCESS }
         #- { path: ^/api/categories*$, roles: PUBLIC_ACCESS }
         #- { path: ^/api/ratingss*$, roles: PUBLIC_ACCESS }
