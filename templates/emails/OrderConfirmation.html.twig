@@ -1,0 +1,13 @@
+{# templates/emails/order_confirmation.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Confirmation</title>
+</head>
+<body>
+    <h1>Order Confirmation</h1>
+    <p>Thank you for your order. Here are the order details:</p>
+    <p>Total: {{ order.getTotal() }}</p>
+    <p>Created At: {{ order.getCreatedAt()|date('Y-m-d H:i:s') }}</p>
+</body>
+</html>
