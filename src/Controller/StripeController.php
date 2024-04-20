@@ -60,10 +60,10 @@ class StripeController extends AbstractController
                 'line_items' => [
                     [
                         'price_data' => [
-                            'currency' => 'usd', // Replace with the appropriate currency code
+                            'currency' => 'eur', 
                             'unit_amount' => $totalAmount * 100, // Convert to cents
                             'product_data' => [
-                                'name' => 'Purchase', // Example item name
+                                'name' => 'Purchase',
                             ],
                         ],
                         'quantity' => 1,
