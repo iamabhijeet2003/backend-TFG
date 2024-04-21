@@ -5,6 +5,13 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\RatingsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+
+#[ApiFilter(SearchFilter::class, properties: [
+    'productId' => 'exact',
+])]
 
 #[ORM\Entity(repositoryClass: RatingsRepository::class)]
 #[ApiResource]
