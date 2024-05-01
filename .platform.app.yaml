@@ -36,9 +36,14 @@ hooks:
       set -e
     deploy: |
       set -e
+      composer install --no-dev --optimize-autoloader
 
 web:
   locations: 
     '/': 
       root: "web"
       passthru: "/index.php"
+
+dependencies:
+    php:
+        composer/composer: '^2
