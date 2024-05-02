@@ -40,11 +40,6 @@ hooks:
       set -e
       composer install --no-dev --optimize-autoloader --no-interaction
 
-web:
-  locations: 
-    '/': 
-      root: "web"
-      passthru: "/index.php"
 
 dependencies:
     php:
@@ -55,7 +50,3 @@ runtime:
         - sodium
         - ctype
         - iconv
-
-variables:
-    php:
-        opcache.preload: config/preload.php
