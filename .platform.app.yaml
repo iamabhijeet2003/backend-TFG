@@ -20,7 +20,7 @@ mounts:
     source_path: uploads
 
 # The size of the persistent disk of the application (in MB).
-disk: 256
+disk: 1024
 
 # The relationships of the application with services or other applications.
 #
@@ -30,6 +30,8 @@ disk: 256
 relationships:
     mysql: 'mysql:mysql'
 
+build:
+    flavor: none
 
 hooks:
     build: |
@@ -51,3 +53,9 @@ dependencies:
 runtime:
     extensions:
         - sodium
+        - ctype
+        - iconv
+
+variables:
+    php:
+        opcache.preload: config/preload.php
