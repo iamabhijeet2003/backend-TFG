@@ -36,7 +36,7 @@ hooks:
       set -e
     deploy: |
       set -e
-      composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-req=ext-sodium
+      composer install --no-dev --optimize-autoloader --no-interaction
 
 web:
   locations: 
