@@ -6,5 +6,5 @@
 # "https://{default}/":
 #     type: redirect
 #     to: "https://www.{default}/"
-"https://{all}/": { type: upstream, upstream: "app:http", cache: { enabled: false } }
+"https://{all}/": { type: upstream, upstream: "app:http" }
 "http://{all}/": { type: redirect, to: "https://{all}/" }

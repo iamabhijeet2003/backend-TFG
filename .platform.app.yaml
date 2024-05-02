@@ -18,6 +18,7 @@ mounts:
   'web/uploads':
     source: local
     source_path: uploads
+  "/var": { source: local, source_path: var }
 
 # The size of the persistent disk of the application (in MB).
 disk: 1024
@@ -30,15 +31,30 @@ disk: 1024
 relationships:
     mysql: 'mysql:mysql'
 
+variables:
+    php:
+        opcache.preload: config/preload.php
 build:
     flavor: none
 
+web:
+    locations:
+        "/":
+            root: "public"
+            expires: 1h
+            passthru: "/index.php"
+
 hooks:
     build: |
-      set -e
+      set -x -e
+      
+      curl -s https://get.symfony.com/cloud/configurator | bash
+
+      symfony-build
     deploy: |
-      set -e
-      composer install --no-dev --optimize-autoloader --no-interaction
+      set -x -e
+      symfony-deploy
+# composer install --no-dev --optimize-autoloader --no-interaction
 
 
 dependencies:
@@ -50,3 +66,8 @@ runtime:
         - sodium
         - ctype
         - iconv
+
+workers:
+    mails:
+        commands:
+            start: symfony console messenger:consume --time-limit=60 --memory-limit=128M
