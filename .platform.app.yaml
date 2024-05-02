@@ -47,3 +47,7 @@ web:
 dependencies:
     php:
         composer/composer: '^2'
+
+runtime:
+    extensions:
+        - sodium
