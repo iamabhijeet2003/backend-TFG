@@ -37,7 +37,7 @@ variables:
     env:
         APP_ENV: 'prod'
 build:
-    flavor: composer
+    flavor: none
 
 web:
     locations:
@@ -75,6 +75,9 @@ runtime:
         - iconv
         - pdo_pgsql
         - pdo
+        - intl
+        - http
+        - xdebug
 
 workers:
     mails:
