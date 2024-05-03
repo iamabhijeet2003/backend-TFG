@@ -73,6 +73,8 @@ runtime:
         - sodium
         - ctype
         - iconv
+        - pdo_pgsql
+        - pdo
 
 workers:
     mails:
