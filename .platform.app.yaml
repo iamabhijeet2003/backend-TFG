@@ -34,6 +34,8 @@ relationships:
 variables:
     php:
         opcache.preload: config/preload.php
+    env:
+        APP_ENV: 'prod'
 build:
     flavor: none
 
@@ -43,6 +45,10 @@ web:
             root: "public"
             expires: 1h
             passthru: "/index.php"
+            scripts: true
+            allow: true
+            headers:
+              Access-Control-Allow-Origin: "*"
 
 hooks:
     build: |
