@@ -19,11 +19,15 @@ class AuthenticationSuccessListener
 
         // Get the user ID
         $userId = $user->getId();
+        $userName = $user->getFirstName();
+        $userRole = $user->getRoles();
 
         // Modify the response data to include the token and user ID
         $responseData = [
             'token' => $data['token'],
             'user_id' => $userId,
+            'username' => $userName,
+            'role'=> $userRole
         ];
 
         // Set the modified response data
