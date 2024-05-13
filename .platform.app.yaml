@@ -1,43 +1,29 @@
-# The name of this app. Must be unique within a project.
 name: app
 
-# The runtime the application uses. The 'type' key defines the base container
-# image that will be used to run the application. There is a separate base
-# container image for each primary language for the application,
-# in multiple versions. Check the PHP documentation
-# (https://docs.platform.sh/languages/php.html#supported-versions)
-# to find the supported versions for the 'php' type.
-type: 'php:8.1'
+type: php:8.1
 
-# The following block defines a single writable directory, 'web/uploads'
-# The 'source' specifies where the writable mount is. The 'local' source
-# indicates that the mount point will point to a local directory on the
-# application container. The 'source_path' specifies the subdirectory
-# from within the source that the mount should point at. 
-mounts:
-  'web/uploads':
-    source: local
-    source_path: uploads
-  "/var": { source: local, source_path: var }
+dependencies:
+    php:
+        composer/composer: "^2"
 
-# The size of the persistent disk of the application (in MB).
-disk: 1024
-
-# The relationships of the application with services or other applications.
-#
-# The left-hand side is the name of the relationship as it will be exposed
-# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
-# side is in the form '<service name>:<endpoint name>'.
-relationships:
-    mysql: 'mysql:mysql'
+runtime:
+    extensions:
+        - apcu
+        - blackfire
+        - ctype
+        - iconv
+        - mbstring
+        - sodium
+        - xsl
+        
 
 variables:
     php:
         opcache.preload: config/preload.php
-    env:
-        APP_ENV: 'prod'
 build:
     flavor: none
+
+disk: 1024
 
 web:
     locations:
@@ -45,56 +31,28 @@ web:
             root: "public"
             expires: 1h
             passthru: "/index.php"
-            scripts: true
-            allow: true
-            headers:
-              Access-Control-Allow-Origin: "*"
+
+mounts:
+    "/var": { source: local, source_path: var }
+    
+
 
 hooks:
     build: |
-      set -x -e
-      
-      curl -s https://get.symfony.com/cloud/configurator | bash
+        set -x -e
 
-      COMPOSER_FLAGS="--ignore-platform-reqs" symfony-build
-#symfony-build
+        curl -fs https://get.symfony.com/cloud/configurator | bash
+        
+        NODE_VERSION=18 symfony-build
+
     deploy: |
-      set -x -e
-      symfony-deploy
-# composer install --no-dev --optimize-autoloader --no-interaction
+        set -x -e
 
+        symfony-deploy
 
-dependencies:
-    php:
-        composer/composer: '^2'
-
-runtime:
-    extensions:
-        - sodium
-        - ctype
-        - iconv
-        - pdo_pgsql
-        - pdo
-        - intl
-        - http
-        - xdebug
-
-workers:
-    mails:
-        commands:
-            start: symfony console messenger:consume --time-limit=60 --memory-limit=128M
-
-# crons:
-#     security-check:
-#         # Check that no security issues have been found for PHP packages deployed in production
-#         # See https://github.com/fabpot/local-php-security-checker
-#         spec: '50 23 * * *'
-#         cmd: if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then croncape php-security-checker; fi
-
-#     comment-cleanup:
-#         # Clean up every night at 11.50 pm (UTC).
-#         spec: '50 23 * * *'
-#         cmd: |
-#             if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then
-#                 croncape symfony console app:comment:cleanup                
-#             fi
+crons:
+    security-check:
+        # Check that no security issues have been found for PHP packages deployed in production
+        # See https://github.com/fabpot/local-php-security-checker
+        spec: '50 23 * * *'
+        cmd: if [ "$PLATFORM_ENVIRONMENT_TYPE" = "production" ]; then croncape php-security-checker; fi
