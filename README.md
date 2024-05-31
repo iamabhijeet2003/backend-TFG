@@ -15,7 +15,7 @@ Este repositorio contiene el código del backend para una tienda online que es m
 - [Contribuir](#contribuir)
 - [Licencia](#licencia)
 
-## Instalación <a id="instalación"></a>
+## Instalación
 
 1. Clona el repositorio:
    ```bash
@@ -108,4 +108,3 @@ Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull re
 ## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
-```
